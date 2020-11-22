@@ -1640,6 +1640,8 @@ The design team can establish deep understanding and connecting domain jargons a
   - The domain or the business rules are simple.
   - A simple CRUD-style user interface and data access operations are sufficient.
 
+### 3. Modern web app azure architecture
+- https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/
 ### 3. Tools
 - SQL SERVER EXPRESS 2019
 - Visual Studio 2019
