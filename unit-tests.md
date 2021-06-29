@@ -30,7 +30,7 @@
 ## Naming Conventions
 - MethodName_StateUnderTest_ExpectedBehavior: 
   - There are arguments against this strategy that if method names change as part of code refactoring than test name like this should also change or it becomes difficult to comprehend at a later stage. Following are some of the example:
-  ```
+  ```csharp
   isAdult_AgeLessThan18_False
   withdrawMoney_InvalidAccount_ExceptionThrown
   admitStudent_MissingMandatoryFields_FailToAdmit
@@ -39,7 +39,7 @@
 - MethodName_ExpectedBehavior_StateUnderTest: 
   - Slightly tweeked from above, but a section of developers also recommend using this naming technique.
   - This technique also has disadvantage that if method names get changed, it becomes difficult to comprehend at a later stage. Following is how tests in first example would read like if named using this technique:
-  ```
+  ```csharp
   isAdult_False_AgeLessThan18
   withdrawMoney_ThrowsException_IfAccountIsInvalid
   admitStudent_FailToAdmit_IfMandatoryFieldsAreMissing
@@ -48,7 +48,7 @@
 - test[Feature being tested]:
   - This one makes it easy to read the test as the feature to be tested is written as part of test name. 
   - Although, there are arguments that the “test” prefix is redundant. However, some sections of developer love to use this technique. Following is how the above tests would read like if named using this technique:
-  ```
+  ```csharp
   testIsNotAnAdultIfAgeLessThan18
   testFailToWithdrawMoneyIfAccountIsInvalid
   testStudentIsNotAdmittedIfMandatoryFieldsAreMissing
@@ -56,21 +56,21 @@
 
 - Feature to be tested:
   - Many suggests that it is better to simply write the feature to be tested because one is anyway using annotations to identify method as test methods. It is also recommended for the reason that it makes unit tests as alternate form of documentation and avoid code smells. Following is how tests in first example would read like if named using this technique:
-  ```
+  ```csharp
   IsNotAnAdultIfAgeLessThan18
   FailToWithdrawMoneyIfAccountIsInvalid
   StudentIsNotAdmittedIfMandatoryFieldsAreMissing
   ```
 
 - Should_ExpectedBehavior_When_StateUnderTest: This technique is also used by many as it makes it easy to read the tests. Following is how tests in first example would read like if named using this technique:
-  ```
+  ```csharp
   Should_ThrowException_When_AgeLessThan18
   Should_FailToWithdrawMoney_ForInvalidAccount
   Should_FailToAdmit_IfMandatoryFieldsAreMissing
 
   ```
 -   When_StateUnderTest_Expect_ExpectedBehavior: Following is how tests in first example would read like if named using this technique:
-  ```
+  ```csharp
     When_AgeLessThan18_Expect_isAdultAsFalse
     When_InvalidAccount_Expect_WithdrawMoneyToFail
     When_MandatoryFieldsAreMissing_Expect_StudentAdmissionToFail
@@ -189,6 +189,7 @@ Why?
 	- Prevents the need for the reader of the test to inspect the production code in order to figure out what makes the value special.
 	- Explicitly shows what you're trying to prove rather than trying to accomplish.
 	- Bad:
+  
 		```csharp
 		[Fact]
 		public void Add_BigNumber_ThrowsException()
@@ -201,6 +202,7 @@ Why?
 		}
 		```
 	- Better:
+  
 		```csharp
 		[Fact]
 		void Add_MaximumSumResult_ThrowsOverflowException()
@@ -345,6 +347,7 @@ Why?
 			}
 			```
 		- Better:
+  
 			```csharp
 			public void ParseLogLine_StartsAndEndsWithSpace_ReturnsTrimmedResult()
 			{
@@ -390,45 +393,49 @@ Why?
 				Assert.Equals(1, actual);
 			}
 			```
+
 		- Better:
+  
 			```csharp
-			public interface IDateTimeProvider
-			{
-				DayOfWeek DayOfWeek();
-			}
+        public interface IDateTimeProvider
+        {
+          DayOfWeek DayOfWeek();
+        }
 
-			public int GetDiscountedPrice(int price, IDateTimeProvider dateTimeProvider)
-			{
-				if (dateTimeProvider.DayOfWeek() == DayOfWeek.Tuesday)
-				{
-					return price / 2;
-				}
-				else
-				{
-					return price;
-				}
-			}
-			public void GetDiscountedPrice_NotTuesday_ReturnsFullPrice()
-			{
-				var priceCalculator = new PriceCalculator();
-				var dateTimeProviderStub = new Mock<IDateTimeProvider>();
-				dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);
+        public int GetDiscountedPrice(int price, IDateTimeProvider dateTimeProvider)
+        {
+          if (dateTimeProvider.DayOfWeek() == DayOfWeek.Tuesday)
+          {
+            return price / 2;
+          }
+          else
+          {
+            return price;
+          }
+        }
+        public void GetDiscountedPrice_NotTuesday_ReturnsFullPrice()
+        {
+          var priceCalculator = new PriceCalculator();
+          var dateTimeProviderStub = new Mock<IDateTimeProvider>();
+          dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);
 
-				var actual = priceCalculator.GetDiscountedPrice(2, dateTimeProviderStub);
+          var actual = priceCalculator.GetDiscountedPrice(2, dateTimeProviderStub);
 
-				Assert.Equals(2, actual);
-			}
+          Assert.Equals(2, actual);
+        }
 
-			public void GetDiscountedPrice_OnTuesday_ReturnsHalfPrice()
-			{
-				var priceCalculator = new PriceCalculator();
-				var dateTimeProviderStub = new Mock<IDateTimeProvider>();
-				dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Tuesday);
+        public void GetDiscountedPrice_OnTuesday_ReturnsHalfPrice()
+        {
+          var priceCalculator = new PriceCalculator();
+          var dateTimeProviderStub = new Mock<IDateTimeProvider>();
+          dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Tuesday);
 
-				var actual = priceCalculator.GetDiscountedPrice(2, dateTimeProviderStub);
+          var actual = priceCalculator.GetDiscountedPrice(2, dateTimeProviderStub);
 
-				Assert.Equals(1, actual);
-			}
+          Assert.Equals(1, actual);
+        }
 			```
+
+
 ## References:
 - https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices
